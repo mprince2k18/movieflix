@@ -1,4 +1,4 @@
-# MoviefLix
+# Movieflix
 
 A new Flutter project.
 
