@@ -2,7 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:untitled/models/movie.dart';
+import 'package:movieflix/models/movie.dart';
 
 void main() {
   runApp(MovieApp());
