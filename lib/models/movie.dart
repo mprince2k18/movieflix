@@ -25,4 +25,8 @@ class Movie {
       required this.rating,
       required this.image,
       this.favourite = false});
+
+  void toggleFavourite(){
+    favourite = !favourite;
+  }
 }

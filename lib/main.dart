@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movieflix/models/movie.dart';
+import 'package:movieflix/screens/movie_details.dart';
 
 void main() {
   runApp(MovieApp());
@@ -70,35 +71,44 @@ class _HomepageState extends State<Homepage> {
                             image: AssetImage(movie.image),
                             repeat: ImageRepeat.noRepeat,
                             fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.darken),
+                            colorFilter:
+                                ColorFilter.mode(Colors.grey, BlendMode.darken),
                           ),
                         ),
-
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Flexible(
-                                  child: Text(
-                                    movie.name,
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20.0),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            MovieDetails(movie)));
+                              },
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      movie.name,
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 20.0),
+                                    ),
                                   ),
-                                ),
-                                Text(
-                                  movie.category,
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16.0),
-                                ),
-                                Text(
-                                  movie.releaseYear.toString(),
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16.0),
-                                ),
-                              ],
+                                  Text(
+                                    movie.category,
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16.0),
+                                  ),
+                                  Text(
+                                    movie.releaseYear.toString(),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16.0),
+                                  ),
+                                ],
+                              ),
                             ),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.end,
@@ -106,14 +116,18 @@ class _HomepageState extends State<Homepage> {
                               children: [
                                 IconButton(
                                   alignment: Alignment.bottomRight,
-                                  onPressed: () {
-                                    print('prince');
-                                  },
                                   icon: Icon(
-                                    Icons.whatshot,
+                                    movie.favourite == true
+                                        ? Icons.favorite
+                                        : Icons.favorite_border,
                                     color: Colors.orange,
                                     size: 24.0,
                                   ),
+                                  onPressed: () {
+                                    setState(() {
+                                      movie.toggleFavourite();
+                                    });
+                                  },
                                 ),
                               ],
                             ),
@@ -127,42 +141,48 @@ class _HomepageState extends State<Homepage> {
             Column(
               children: [
                 Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
-                      child: Text(
-                        'POPULAR LIST',
-                        style: TextStyle(fontSize: 18.0),
-                      ),
-                    ))
+                  alignment: Alignment.centerLeft,
+                  child: Container(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
+                    child: Text(
+                      'POPULAR LIST',
+                      style: TextStyle(fontSize: 18.0),
+                    ),
+                  ),
+                ),
               ],
             ),
-            Container(
-              height: 500, // main height
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                children: movies
-                    .map(
-                      (movie) => Container(
-                        margin: EdgeInsets.all(10.0),
-                        width: 250,
-                        height: 250,
-                        padding: EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(15.0),
-                          image: DecorationImage(
-                            image: AssetImage(movie.image),
-                            repeat: ImageRepeat.noRepeat,
-                            fit: BoxFit.cover,
-                            colorFilter: ColorFilter.mode(Colors.grey, BlendMode.darken),
-                          ),
+            Column(
+              children: movies
+                  .map(
+                    (movie) => Container(
+                      margin: EdgeInsets.all(10.0),
+                      width: 350,
+                      height: 250,
+                      padding: EdgeInsets.all(10.0),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(15.0),
+                        image: DecorationImage(
+                          image: AssetImage(movie.image),
+                          repeat: ImageRepeat.noRepeat,
+                          fit: BoxFit.cover,
+                          colorFilter:
+                              ColorFilter.mode(Colors.grey, BlendMode.darken),
                         ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          MovieDetails(movie)));
+                            },
+                            child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -185,29 +205,33 @@ class _HomepageState extends State<Homepage> {
                                 ),
                               ],
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                IconButton(
-                                  alignment: Alignment.bottomRight,
-                                  onPressed: () {
-                                    print('prince');
-                                  },
-                                  icon: Icon(
-                                    Icons.whatshot,
-                                    color: Colors.orange,
-                                    size: 34.0,
-                                  ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              IconButton(
+                                alignment: Alignment.bottomRight,
+                                icon: Icon(
+                                  movie.favourite == true
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: Colors.orange,
+                                  size: 24.0,
                                 ),
-                              ],
-                            ),
-                          ],
-                        ),
+                                onPressed: () {
+                                  setState(() {
+                                    movie.toggleFavourite();
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
-                    )
-                    .toList(),
-              ),
+                    ),
+                  )
+                  .toList(),
             ),
           ],
         ),
